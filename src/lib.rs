@@ -80,19 +80,6 @@ impl TryFrom<String> for Mode {
     }
 }
 
-// pub fn get_modes(input: String) -> Result<HashSet<Mode>, String> {
-//     let mut modes = HashSet::<Mode>::with_capacity(3);
-
-//     for ch in input.chars() {
-//         match Mode::try_from(ch) {
-//             Ok(mode) => modes.insert(mode),
-//             Err(err) => return Err(err),
-//         };
-//     }
-
-//     Ok(modes)
-// }
-
 #[derive(Clone, Copy, Debug)]
 enum Time {
     Second(u64),
@@ -100,7 +87,7 @@ enum Time {
     Hour(u64),
     Day(u64),
     Week(u64),
-    Month(u64), // 30 days
+    Month(u64),
     Year(u64),
 }
 
@@ -169,10 +156,8 @@ impl Config {
                     Err(_) => return Err("Invalid time".into()),
                 };
 
-                match Time::try_from((period, val)) {
-                    Ok(time) => time,
-                    Err(err) => return Err(err),
-                }
+                let t = Time::try_from((period, val))?;
+                t
             }
             None => return Err("Missing time".into()),
         };
